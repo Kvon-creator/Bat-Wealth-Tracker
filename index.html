@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne Enterprises Asset Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Wayne Enterprises Asset Tracker</h1>
+</header>
+
+<main>
+    <section class="form-section">
+        <h2>Add Equipment</h2>
+
+        <form id="assetForm">
+            <label for="name">Equipment Name</label>
+            <input type="text" id="name" required>
+
+            <label for="type">Category</label>
+            <select id="type">
+                <option>Vehicle</option>
+                <option>Technology</option>
+                <option>Property</option>
+                <option>Security System</option>
+                <option>Other</option>
+            </select>
+
+            <label for="value">Estimated Value ($)</label>
+            <input type="number" id="value" required>
+
+            <button type="submit">Add Equipment</button>
+        </form>
+    </section>
+
+    <section class="asset-section">
+        <h2>Equipment Inventory</h2>
+
+        <ul id="assetList"></ul>
+
+        <h3>Total Resources: $<span id="totalWealth">0</span></h3>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
