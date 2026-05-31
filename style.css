@@ -52,6 +52,13 @@ ul {
 li {
     padding: 10px;
     border-bottom: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li button {
+    margin-left: 10px;
 }
 
 @media (max-width: 768px) {
