@@ -1,4 +1,5 @@
 let assets = JSON.parse(localStorage.getItem("batEquipment")) || [];
+let editIndex = -1;
 
 const form = document.getElementById("assetForm");
 const assetList = document.getElementById("assetList");
@@ -19,7 +20,12 @@ form.addEventListener("submit", function (event) {
         value: value
     };
 
-    assets.push(asset);
+    if (editIndex === -1) {
+        assets.push(asset);
+    } else {
+        assets[editIndex] = asset;
+        editIndex = -1;
+    }
 
     localStorage.setItem("batEquipment", JSON.stringify(assets));
 
@@ -34,14 +40,28 @@ function displayAssets() {
     let total = 0;
 
     for (let i = 0; i < assets.length; i++) {
+
         const li = document.createElement("li");
 
-        li.textContent =
+        const info = document.createElement("span");
+
+        info.textContent =
             assets[i].name +
             " | " +
             assets[i].type +
             " | $" +
             assets[i].value;
+
+        const editButton = document.createElement("button");
+
+        editButton.textContent = "Edit";
+
+        editButton.addEventListener("click", function () {
+            editAsset(i);
+        });
+
+        li.appendChild(info);
+        li.appendChild(editButton);
 
         assetList.appendChild(li);
 
@@ -49,4 +69,18 @@ function displayAssets() {
     }
 
     totalWealth.textContent = total;
+}
+
+function editAsset(index) {
+
+    document.getElementById("name").value =
+        assets[index].name;
+
+    document.getElementById("type").value =
+        assets[index].type;
+
+    document.getElementById("value").value =
+        assets[index].value;
+
+    editIndex = index;
 }
