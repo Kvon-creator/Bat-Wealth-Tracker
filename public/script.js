@@ -1,40 +1,73 @@
-let assets = JSON.parse(localStorage.getItem("batEquipment")) || [];
+let assets = [];
+
 let editIndex = -1;
 
 const form = document.getElementById("assetForm");
 const assetList = document.getElementById("assetList");
 const totalWealth = document.getElementById("totalWealth");
 
-displayAssets();
+loadAssets();
 
 form.addEventListener("submit", function (event) {
+
     event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const type = document.getElementById("type").value;
-    const value = Number(document.getElementById("value").value);
-
     const asset = {
-        name: name,
-        type: type,
-        value: value
+        name: document.getElementById("name").value,
+        type: document.getElementById("type").value,
+        value: Number(document.getElementById("value").value)
     };
 
     if (editIndex === -1) {
-        assets.push(asset);
+
+        saveAsset(asset);
+
     } else {
+
         assets[editIndex] = asset;
+
+        displayAssets();
+
         editIndex = -1;
     }
-
-    localStorage.setItem("batEquipment", JSON.stringify(assets));
-
-    displayAssets();
 
     form.reset();
 });
 
+function loadAssets() {
+
+    fetch("/api/assets")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+
+            assets = data;
+
+            displayAssets();
+        });
+}
+
+function saveAsset(asset) {
+
+    fetch("/api/assets", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(asset)
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function () {
+
+            loadAssets();
+        });
+}
+
 function displayAssets() {
+
     assetList.innerHTML = "";
 
     let total = 0;
@@ -43,9 +76,9 @@ function displayAssets() {
 
         const li = document.createElement("li");
 
-        const info = document.createElement("span");
+        const text = document.createElement("span");
 
-        info.textContent =
+        text.textContent =
             assets[i].name +
             " | " +
             assets[i].type +
@@ -60,7 +93,7 @@ function displayAssets() {
             editAsset(i);
         });
 
-        li.appendChild(info);
+        li.appendChild(text);
         li.appendChild(editButton);
 
         assetList.appendChild(li);
