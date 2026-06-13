@@ -1,5 +1,4 @@
 let assets = [];
-
 let editIndex = -1;
 
 const form = document.getElementById("assetForm");
